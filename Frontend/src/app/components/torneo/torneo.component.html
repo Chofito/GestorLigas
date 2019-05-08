@@ -1,0 +1,77 @@
+<div *ngIf="noHay" class="alert alert-danger" role="alert">
+    <div class="alert-items">
+        <div class="alert-item static">
+            <div class="alert-icon-wrapper">
+                <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+            </div>
+            <span class="alert-text">
+                Esta liga no tiene equipos, debera crear alguno.
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="clr-row">
+  <div class="clr-col-2" *ngFor="let liga of ligas">
+      <div class="card clickable" (click)="hola(liga._id)">
+          <div class="card-header">
+              Nombre de la liga
+          </div>
+          <div class="card-block">
+            <p class="card-text">
+                {{ liga.nombreLiga }}
+            </p>
+          </div>
+          <div class="card-footer">
+              <a class="btn btn-sm btn-link">Seleccionar</a>
+          </div>
+      </div>
+  </div> 
+
+  <div class="clr-col-2">
+      <div class="card clickable">
+          <div class="card-block">
+            <p class="card-text">
+                Agregar Liga
+            </p>
+          </div>
+      </div>
+  </div> 
+</div>
+
+<div *ngIf="mostrar">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Goles a Favor</th>
+                <th>Goles en Contra</th>
+                <th>Diferencia de Goles</th>
+                <th>Partidos Jugados</th>
+                <th>Puntos</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let equipo of equiposLiga">
+                <td>{{ equipo.nombreEquipo }}</td>
+                <td>{{ equipo.golesAFavor }}</td>
+                <td>{{ equipo.golesEnContra }}</td>
+                <td>{{ equipo.diferenciaDeGoles }}</td>
+                <td>{{ equipo.partidosJugados }}</td>
+                <td>{{ equipo.puntos }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div>
+            <div>
+                <div style="display: block">
+                <canvas baseChart
+                    [datasets]="radarChartData"
+                    [options]="radarChartOptions"
+                    [labels]="radarChartLabels"
+                    [chartType]="radarChartType">
+                </canvas>
+                </div>
+            </div>
+            </div>
+</div>
