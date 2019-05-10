@@ -10,6 +10,7 @@ var EquipoSchema = Schema({
     diferenciaDeGoles: Number,
     partidosJugados: Number,
     puntos: Number,
+    imagen: String,
     liga: {type: Schema.Types.ObjectId, ref: 'Ligas'}
 });
 

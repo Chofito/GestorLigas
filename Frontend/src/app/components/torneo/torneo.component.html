@@ -1,77 +1,236 @@
 <div *ngIf="noHay" class="alert alert-danger" role="alert">
-    <div class="alert-items">
-        <div class="alert-item static">
-            <div class="alert-icon-wrapper">
-                <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
-            </div>
-            <span class="alert-text">
-                Esta liga no tiene equipos, debera crear alguno.
-            </span>
-        </div>
+  <div class="alert-items">
+    <div class="alert-item static">
+      <div class="alert-icon-wrapper">
+        <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+      </div>
+      <span class="alert-text">
+        Esta liga no tiene equipos, debera crear alguno.
+      </span>
     </div>
+  </div>
 </div>
 
 <div class="clr-row">
   <div class="clr-col-2" *ngFor="let liga of ligas">
-      <div class="card clickable" (click)="hola(liga._id)">
-          <div class="card-header">
-              Nombre de la liga
-          </div>
-          <div class="card-block">
-            <p class="card-text">
-                {{ liga.nombreLiga }}
-            </p>
-          </div>
-          <div class="card-footer">
-              <a class="btn btn-sm btn-link">Seleccionar</a>
-          </div>
+    <div class="card clickable" (click)="hola(liga._id)">
+      <div class="card-header">
+        Nombre de la liga
       </div>
-  </div> 
+      <div class="card-block">
+        <p class="card-text">
+          {{ liga.nombreLiga }}
+        </p>
+      </div>
+      <div class="card-footer">
+        <a class="btn btn-sm btn-link">Seleccionar</a>
+      </div>
+    </div>
+  </div>
 
-  <div class="clr-col-2">
-      <div class="card clickable">
-          <div class="card-block">
-            <p class="card-text">
-                Agregar Liga
-            </p>
-          </div>
-      </div>
-  </div> 
+  <button
+    type="button"
+    (click)="agregarLiga()"
+    class="btn btn-icon btn-success"
+  >
+    <clr-icon shape="plus"></clr-icon>Agregar Liga
+  </button>
 </div>
 
 <div *ngIf="mostrar">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Goles a Favor</th>
-                <th>Goles en Contra</th>
-                <th>Diferencia de Goles</th>
-                <th>Partidos Jugados</th>
-                <th>Puntos</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let equipo of equiposLiga">
-                <td>{{ equipo.nombreEquipo }}</td>
-                <td>{{ equipo.golesAFavor }}</td>
-                <td>{{ equipo.golesEnContra }}</td>
-                <td>{{ equipo.diferenciaDeGoles }}</td>
-                <td>{{ equipo.partidosJugados }}</td>
-                <td>{{ equipo.puntos }}</td>
-            </tr>
-        </tbody>
-    </table>
+  <!-- <table class="table">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Goles a Favor</th>
+        <th>Goles en Contra</th>
+        <th>Diferencia de Goles</th>
+        <th>Partidos Jugados</th>
+        <th>Puntos</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let equipo of equiposLiga">
+        <td>{{ equipo.nombreEquipo }}</td>
+        <td>{{ equipo.golesAFavor }}</td>
+        <td>{{ equipo.golesEnContra }}</td>
+        <td>{{ equipo.diferenciaDeGoles }}</td>
+        <td>{{ equipo.partidosJugados }}</td>
+        <td>{{ equipo.puntos }}</td>
+      </tr>
+    </tbody>
+  </table> -->
+  
+  <div *ngIf="equiposLiga != 'undefined'">
+    <clr-datagrid>
+      <clr-dg-column>Nombre</clr-dg-column>
+      <clr-dg-column>Goles a Favor</clr-dg-column>
+      <clr-dg-column>Goles en Contra</clr-dg-column>
+      <clr-dg-column>Diferencia de Goles</clr-dg-column>
+      <clr-dg-column>Partidos Jugados</clr-dg-column>
+      <clr-dg-column>Puntos</clr-dg-column>
+      <clr-dg-column></clr-dg-column>
+    
+      <clr-dg-row *ngFor="let equipo of equiposLiga">
+        <clr-dg-cell>{{ equipo.nombreEquipo }}</clr-dg-cell>
+        <clr-dg-cell>{{ equipo.golesAFavor }}</clr-dg-cell>
+        <clr-dg-cell>{{ equipo.golesEnContra }}</clr-dg-cell>
+        <clr-dg-cell>{{ equipo.diferenciaDeGoles }}</clr-dg-cell>
+        <clr-dg-cell>{{ equipo.partidosJugados }}</clr-dg-cell>
+        <clr-dg-cell>{{ equipo.puntos }}</clr-dg-cell>
+        <clr-dg-cell><img src="{{ url + 'obtener-imagen/' + equipo.imagen }}" width="50" height="50" alt="Imagen"></clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  </div>
+
+  <button type="button" class="btn btn-primary" (click)="mostrarModalEquipo = !mostrarModalEquipo">Agregar Equipo</button>
+  <button type="button" class="btn btn-primary" (click)="mostrarModalMarcador = !mostrarModalMarcador">Agregar Marcador</button>
+
+  <div *ngIf="radarChartData.length != 0">
     <div>
-            <div>
-                <div style="display: block">
-                <canvas baseChart
-                    [datasets]="radarChartData"
-                    [options]="radarChartOptions"
-                    [labels]="radarChartLabels"
-                    [chartType]="radarChartType">
-                </canvas>
-                </div>
-            </div>
-            </div>
+      <div style="display: block">
+        <canvas
+          baseChart
+          [datasets]="radarChartData"
+          [options]="radarChartOptions"
+          [labels]="radarChartLabels"
+          [chartType]="radarChartType"
+        >
+        </canvas>
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- Seccion para modals -->
+<clr-modal [(clrModalOpen)]="mostrarModalLiga">
+  <h3 class="modal-title">Agregar nueva liga</h3>
+  <div class="modal-body">
+    <form clrForm>
+      <clr-input-container>
+        <label>Nombre de la liga</label>
+        <input
+          placeholder="Full name"
+          clrInput
+          [(ngModel)]="nombreNuevaLiga"
+          name="name"
+          required
+        />
+        <clr-control-helper>No uses caracteres extraños</clr-control-helper>
+        <clr-control-error>Este campo es obligatorio!</clr-control-error>
+      </clr-input-container>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline"
+      (click)="mostrarModalLiga = !mostrarModalLiga"
+    >
+      Cancel
+    </button>
+    <button type="button" class="btn btn-primary" (click)="agregarLiga()">
+      Ok
+    </button>
+  </div>
+</clr-modal>
+
+
+
+<clr-modal [(clrModalOpen)]="mostrarModalEquipo">
+  <h3 class="modal-title">Agregar nuevo equipo</h3>
+  <div class="modal-body">
+    <form clrForm>
+      <clr-input-container>
+        <label>Nombre del equipo</label>
+        <input
+          placeholder="nombre"
+          clrInput
+          [(ngModel)]="nombreEquipo"
+          name="name"
+          required
+        />
+        <clr-control-helper>No uses caracteres extraños</clr-control-helper>
+        <clr-control-error>Este campo es obligatorio!</clr-control-error>
+      </clr-input-container>
+    </form>
+
+    <form clrForm>
+      <clr-input-container>
+        <label>Nombre goles a favor</label>
+        <input
+          placeholder="No. goles"
+          clrInput
+          [(ngModel)]="golesAFavor"
+          name="name"
+          required
+        />
+        <clr-control-helper>No uses caracteres extraños</clr-control-helper>
+        <clr-control-error>Este campo es obligatorio!</clr-control-error>
+      </clr-input-container>
+    </form>
+    <form clrForm>
+      <clr-input-container>
+        <label>Goles en contra</label>
+        <input
+          placeholder="No. goles"
+          clrInput
+          [(ngModel)]="golesEnContra"
+          name="name"
+          required
+        />
+        <clr-control-helper>No uses caracteres extraños</clr-control-helper>
+        <clr-control-error>Este campo es obligatorio!</clr-control-error>
+      </clr-input-container>
+    </form>
+
+    <form clrForm>
+      <clr-input-container>
+        <label>Partidos jugados</label>
+        <input
+          placeholder="No. partidos"
+          clrInput
+          [(ngModel)]="partidosJugados"
+          name="name"
+          required
+        />
+        <clr-control-helper>No uses caracteres extraños</clr-control-helper>
+        <clr-control-error>Este campo es obligatorio!</clr-control-error>
+      </clr-input-container>
+    </form>
+
+    <form clrForm>
+      <clr-input-container>
+        <label>Puntos</label>
+        <input
+          placeholder="No. puntos"
+          clrInput
+          [(ngModel)]="puntos"
+          name="name"
+          required
+        />
+        <clr-control-helper>No uses caracteres extraños</clr-control-helper>
+        <clr-control-error>Este campo es obligatorio!</clr-control-error>
+      </clr-input-container>
+    </form>
+
+    <button (click)="fileInput.click()" type="button" class="btn btn-icon">
+      <clr-icon shape="home"></clr-icon>Agregar imagen
+    </button>
+    <input hidden type="file" #fileInput id="file" (change)="fileChangeEvent($event)"/>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline"
+      (click)="mostrarModalEquipo = !mostrarModalEquipo"
+    >
+      Cancel
+    </button>
+    <button type="button" class="btn btn-primary" (click)="agregarEquipo()">
+      Ok
+    </button>
+  </div>
+
+
+</clr-modal>

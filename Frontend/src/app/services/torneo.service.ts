@@ -13,8 +13,8 @@ export class TorneoService {
     this.url = GLOBAL.url;
   }
 
-  agregarLiga(liga: Liga): Observable<any> { //lista
-    let params = JSON.stringify(liga);
+  agregarLiga(nombreLiga: String): Observable<any> { //lista
+    let params = JSON.stringify({nombreLiga: nombreLiga});
     let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     return this._http.post(this.url + 'agregar-liga', params, { headers: headers });
@@ -23,6 +23,8 @@ export class TorneoService {
   agregarEquipo(equipo: Equipo): Observable<any> { //lista
     let params = JSON.stringify(equipo);
     let headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    console.log(params)
 
     return this._http.post(this.url + 'agregar-equipo', params, { headers: headers });
   }
